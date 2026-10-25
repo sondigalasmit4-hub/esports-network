@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS // Pro Esports Scouting & Athlete Network</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+        }
+        .font-gaming {
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 0.04em;
+        }
+        .cyber-card {
+            background: linear-gradient(145deg, #111827 0%, #0f172a 100%);
+            border: 1px solid #1e293b;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+        }
+        .cyber-card:hover {
+            border-color: #6366f1;
+        }
+        .accent-gradient {
+            background: linear-gradient(90deg, #4f46e5 0%, #06b6d4 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Top Navigation Bar -->
+    <nav class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded accent-gradient flex items-center justify-center font-gaming text-xl font-bold text-white shadow-lg shadow-indigo-500/30">
+                    NX
+                </div>
+                <div>
+                    <span class="font-gaming text-2xl font-bold tracking-wider text-white">NEXUS<span class="text-cyan-400">PRO</span></span>
+                    <span class="hidden sm:inline-block ml-2 text-xs uppercase px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Esports Talent Network</span>
+                </div>
+            </div>
+
+            <div id="navUserSection" class="hidden items-center space-x-4">
+                <span id="navUserBadge" class="text-sm text-slate-300"></span>
+                <button onclick="logout()" class="text-xs font-semibold uppercase tracking-wider px-4 py-2 rounded bg-slate-800 hover:bg-red-500/20 hover:text-red-400 border border-slate-700 transition">
+                    Sign Out
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- AUTHENTICATION VIEW (LOGIN / REGISTER) -->
+    <main id="authView" class="flex-grow flex items-center justify-center p-6">
+        <div class="max-w-4xl w-full grid md:grid-cols-2 gap-8 items-center">
+            <div class="space-y-4">
+                <div class="inline-block text-xs font-semibold uppercase tracking-widest text-cyan-400 bg-cyan-950/60 border border-cyan-800/50 px-3 py-1 rounded">
+                    Tier-1 Esports Scouting
+                </div>
+                <h1 class="font-gaming text-5xl font-bold text-white leading-tight">
+                    YOUR COMPETITIVE PORTFOLIO FOR <span class="text-transparent bg-clip-text accent-gradient">PRO ORGS.</span>
+                </h1>
+                <p class="text-slate-400 text-sm leading-relaxed">
+                    Showcase verified game-specific metrics (K/D Ratio, Peak Rating, Win Rate, and Primary Roles) directly to esports organization scouts, team managers, and analysts.
+                </p>
+                <div class="p-4 rounded-lg bg-slate-900/90 border border-slate-800 text-xs space-y-1.5 text-slate-300">
+                    <div class="font-semibold text-indigo-400 uppercase tracking-wider">Instant Demo Credentials:</div>
+                    <div><strong>Gamer Login:</strong> <code class="text-cyan-300">vortex@esports.gg</code> / <code class="text-cyan-300">password123</code></div>
+                    <div><strong>Recruiter Login:</strong> <code class="text-cyan-300">scout@org.gg</code> / <code class="text-cyan-300">password123</code></div>
+                </div>
+            </div>
+
+            <!-- Login / Register Card -->
+            <div class="cyber-card rounded-xl p-8">
+                <div class="flex border-b border-slate-800 mb-6">
+                    <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="w-1/2 pb-3 text-sm font-semibold border-b-2 border-cyan-400 text-white">
+                        Sign In
+                    </button>
+                    <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="w-1/2 pb-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-white">
+                        Register Account
+                    </button>
+                </div>
+
+                <div id="authError" class="hidden mb-4 p-3 rounded bg-red-950/60 border border-red-800 text-red-300 text-xs"></div>
+
+                <!-- LOGIN FORM -->
+                <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Email Address</label>
+                        <input type="email" id="loginEmail" required value="vortex@esports.gg"
+                               class="w-full px-3.5 py-2.5 rounded bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-slate-400 mb-1">Password</label>
+                        <input type="password" id="loginPassword" required value="password123"
+                               class="w-full px-3.5 py-2.5 rounded bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyan-400">
+                    </div>
+                    <button type="submit" class="w-full py-3 rounded font-gaming text-lg font-bold text-white accent-gradient hover:opacity-95 transition">
+                        ENTER NETWORK
+                    </button>
+                </form>
+
+                <!-- REGISTER FORM -->
+                <form id="registerForm" onsubmit="handleRegister(event)" class="hidden space-y-3.5">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs uppercase text-slate-400 mb-1">Full Name</label>
+                            <input type="text" id="regName" required placeholder="Smit Patel"
+                                   class="w-full px-3 py-2 rounded bg-slate-900 border border-slate-700 text-white text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase text-slate-400 mb-1">In-Game Alias (IGN)</label>
+                            <input type="text" id="regGamertag" required placeholder="Deadshot_OP"
+                                   class="w-full px-3 py-2 rounded bg-slate-900 border border-slate-700 text-white text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase text-slate-400 mb-1">Account Role</label>
+                        <select id="regRole" class="w-full px-3 py-2 rounded bg-slate-900 border border-slate-700 text-white text-sm">
+                            <option value="GAMER">Esports Athlete / Player</option>
+                            <option value="RECRUITER">Organization Recruiter / Scout</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase text-slate-400 mb-1">Email Address</label>
+                        <input type="email" id="regEmail" required placeholder="player@esports.gg"
+                               class="w-full px-3 py-2 rounded bg-slate-900 border border-slate-700 text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase text-slate-400 mb-1">Password</label>
+                        <input type="password" id="regPassword" required placeholder="••••••••"
+                               class="w-full px-3 py-2 rounded bg-slate-900 border border-slate-700 text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase text-slate-400 mb-1">Discord Tag (For Tryout Contact)</label>
+                        <input type="text" id="regDiscord" required placeholder="Player#0001"
+                               class="w-full px-3 py-2 rounded bg-slate-900 border border-slate-700 text-white text-sm">
+                    </div>
+                    <button type="submit" class="w-full py-2.5 rounded font-gaming text-lg font-bold text-white accent-gradient">
+                        CREATE ESPORTS PROFILE
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- DASHBOARD VIEW -->
+    <main id="dashboardView" class="hidden flex-grow max-w-7xl w-full mx-auto px-6 py-8 space-y-10">
+
+        <!-- GAMER SELF-MANAGEMENT PANEL -->
+        <section id="gamerManagementSection" class="hidden grid lg:grid-cols-3 gap-6">
+            <div class="cyber-card rounded-xl p-6 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h2 class="font-gaming text-xl font-bold text-white">MY ATHLETE BIO</h2>
+                    <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Active Player</span>
+                </div>
+                <form onsubmit="saveProfileBio(event)" class="space-y-3">
+                    <div>
+                        <label class="text-xs text-slate-400">Full Name</label>
+                        <input type="text" id="editFullName" class="w-full mt-1 px-3 py-2 rounded bg-slate-900 border border-slate-700 text-sm text-white">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400">IGN / Gamertag</label>
+                        <input type="text" id="editGamertag" class="w-full mt-1 px-3 py-2 rounded bg-slate-900 border border-slate-700 text-sm text-white">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400">Discord Contact</label>
+                        <input type="text" id="editDiscord" class="w-full mt-1 px-3 py-2 rounded bg-slate-900 border border-slate-700 text-sm text-white">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400">Career Headline & Past Teams</label>
+                        <textarea id="editBio" rows="3" class="w-full mt-1 px-3 py-2 rounded bg-slate-900 border border-slate-700 text-sm text-white"></textarea>
+                    </div>
+                    <button type="submit" class="w-full py-2 rounded bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold uppercase tracking-wider text-white transition">
+                        Update Bio Details
+                    </button>
+                </form>
+            </div>
+
+            <div class="cyber-card rounded-xl p-6 lg:col-span-2 flex flex-col justify-between space-y-6">
+                <div>
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                        <div>
+                            <h2 class="font-gaming text-xl font-bold text-white">ADD OR UPDATE GAME STATS</h2>
+                            <p class="text-xs text-slate-400">Stats are organized under each game's dedicated tab on your profile.</p>
+                        </div>
+                    </div>
+
+                    <form onsubmit="saveGameStat(event)" class="grid sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="text-xs text-slate-400">Game Title</label>
+                            <select id="statGameName" class="w-full mt-1 px-3 py-2 rounded bg-slate-900 border border-slate-700 text-sm text-white">
+                                <option value="Valorant">Valorant</option>
+                                <option value="Call of Duty: Mobile">Call of Duty: Mobile</option>
+                                <option value="Counter-Strike 2">Counter-Strike 2</option>
+                                <option value="BGMI / PUBG">BGMI / PUBG</option>
+                                <option value="Apex Legends">Apex Legends</option>
+                                <option value="League of Legends">League of Legends</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400">Highest / Peak Rank</label>
+                            <input type="text" id="statRank" required placeholder="e.g. Radiant / Legendary"
+                                   class="w-full mt-1 px-3 py-2 rounded bg-slate-900 border border-slate-700 text-sm text-white">
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400">Primary Role</label>
+                            <input type="text" id="statRole" required placeholder="e.g. Main Sniper / IGL"
+                                   class="w-full mt-1 px-3 py-2 rounded bg-slate-900 border border-slate-700 text-sm text-white">
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400">Overall K/D Ratio</label>
+                            <input type="number" step="0.01" id="statKd" required placeholder="1.45"
+                                   class="w-full mt-1 px-3 py-2 rounded bg-slate-900 border border-slate-700 text-sm text-white">
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400">Win Percentage (%)</label>
+                            <input type="number" step="0.1" id="statWinRate" required placeholder="64.5"
+                                   class="w-full mt-1 px-3 py-2 rounded bg-slate-900 border border-slate-700 text-sm text-white">
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400">Official Matches Played</label>
+                            <input type="number" id="statMatches" required placeholder="850"
+                                   class="w-full mt-1 px-3 py-2 rounded bg-slate-900 border border-slate-700 text-sm text-white">
+                        </div>
+                        <div class="sm:col-span-3">
+                            <button type="submit" class="w-full py-2.5 rounded accent-gradient font-gaming text-base font-bold text-white tracking-wider">
+                                + PUBLISH GAME DATA TO PROFILE
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="border-t border-slate-800 pt-4">
+                    <span class="text-xs uppercase tracking-wider text-slate-400 block mb-2">Your Published Game Portfolios (Click X to remove):</span>
+                    <div id="myStatsList" class="flex flex-wrap gap-2"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RECRUITER & GLOBAL TALENT DIRECTORY -->
+        <section class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                <div>
+                    <h2 class="font-gaming text-3xl font-bold text-white">VERIFIED ESPORTS ATHLETE DIRECTORY</h2>
+                    <p class="text-xs text-slate-400">Click any game tab inside a player's card to inspect game-specific K/D, Peak Rank, and Role.</p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3">
+                    <select id="filterGame" onchange="renderPlayersDirectory()" class="px-3 py-2 rounded bg-slate-900 border border-slate-700 text-xs text-white">
+                        <option value="ALL">All Esports Titles</option>
+                        <option value="Valorant">Valorant</option>
+                        <option value="Call of Duty: Mobile">Call of Duty: Mobile</option>
+                        <option value="Counter-Strike 2">Counter-Strike 2</option>
+                        <option value="BGMI / PUBG">BGMI / PUBG</option>
+                        <option value="Apex Legends">Apex Legends</option>
+                    </select>
+                    <input type="number" id="filterMinKd" oninput="renderPlayersDirectory()" step="0.1" placeholder="Min K/D (e.g. 1.3)"
+                           class="w-36 px-3 py-2 rounded bg-slate-900 border border-slate-700 text-xs text-white">
+                </div>
+            </div>
+
+            <div id="playersGrid" class="grid md:grid-cols-2 gap-6"></div>
+        </section>
+    </main>
+
+    <script>
+        let currentUser = null;
+        let allPlayers = [];
+        let selectedGameTab = {};
+
+        function switchAuthTab(tab) {
+            const isLogin = tab === 'login';
+            document.getElementById('loginForm').classList.toggle('hidden', !isLogin);
+            document.getElementById('registerForm').classList.toggle('hidden', isLogin);
+            document.getElementById('tabLoginBtn').className = isLogin
+                ? 'w-1/2 pb-3 text-sm font-semibold border-b-2 border-cyan-400 text-white'
+                : 'w-1/2 pb-3 text-sm font-semibold border-b-2 border-transparent text-slate-400';
+            document.getElementById('tabRegisterBtn').className = !isLogin
+                ? 'w-1/2 pb-3 text-sm font-semibold border-b-2 border-cyan-400 text-white'
+                : 'w-1/2 pb-3 text-sm font-semibold border-b-2 border-transparent text-slate-400';
+            document.getElementById('authError').classList.add('hidden');
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (res.ok) {
+                currentUser = await res.json();
+                enterDashboard();
+            } else {
+                const err = await res.json();
+                showAuthError(err.error || 'Login failed');
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const payload = {
+                fullName: document.getElementById('regName').value,
+                gamertag: document.getElementById('regGamertag').value,
+                role: document.getElementById('regRole').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPassword').value,
+                discordHandle: document.getElementById('regDiscord').value
+            };
+
+            const res = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                currentUser = await res.json();
+                enterDashboard();
+            } else {
+                const err = await res.json();
+                showAuthError(err.error || 'Registration failed');
+            }
+        }
+
+        function showAuthError(msg) {
+            const box = document.getElementById('authError');
+            box.textContent = msg;
+            box.classList.remove('hidden');
+        }
+
+        async function enterDashboard() {
+            document.getElementById('authView').classList.add('hidden');
+            document.getElementById('dashboardView').classList.remove('hidden');
+            document.getElementById('navUserSection').classList.remove('hidden');
+            document.getElementById('navUserSection').classList.add('flex');
+
+            document.getElementById('navUserBadge').innerHTML = `
+                <span class="font-semibold text-white">${currentUser.gamertag}</span>
+                <span class="ml-1 text-xs px-2 py-0.5 rounded bg-slate-800 text-cyan-400 border border-slate-700">${currentUser.role}</span>
+            `;
+
+            if (currentUser.role === 'GAMER') {
+                document.getElementById('gamerManagementSection').classList.remove('hidden');
+                populateGamerEditor();
+            } else {
+                document.getElementById('gamerManagementSection').classList.add('hidden');
+            }
+
+            await fetchPlayers();
+        }
+
+        function populateGamerEditor() {
+            document.getElementById('editFullName').value = currentUser.fullName || '';
+            document.getElementById('editGamertag').value = currentUser.gamertag || '';
+            document.getElementById('editDiscord').value = currentUser.discordHandle || '';
+            document.getElementById('editBio').value = currentUser.bio || '';
+
+            const list = document.getElementById('myStatsList');
+            if (!currentUser.gameStats || currentUser.gameStats.length === 0) {
+                list.innerHTML = `<span class="text-xs text-slate-500">No games added yet. Use the form above to add your first game.</span>`;
+                return;
+            }
+            list.innerHTML = currentUser.gameStats.map(s => `
+                <div class="flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-xs">
+                    <span class="font-semibold text-cyan-400">${s.gameName}</span>
+                    <span class="text-slate-400">(${s.kdRatio} K/D)</span>
+                    <button onclick="deleteStat(${s.id})" class="text-slate-500 hover:text-red-400 font-bold ml-1">&times;</button>
+                </div>
+            `).join('');
+        }
+
+        async function saveProfileBio(e) {
+            e.preventDefault();
+            const payload = {
+                fullName: document.getElementById('editFullName').value,
+                gamertag: document.getElementById('editGamertag').value,
+                discordHandle: document.getElementById('editDiscord').value,
+                bio: document.getElementById('editBio').value
+            };
+            const res = await fetch(`/api/players/${currentUser.id}/profile`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) {
+                currentUser = await res.json();
+                populateGamerEditor();
+                await fetchPlayers();
+            }
+        }
+
+        async function saveGameStat(e) {
+            e.preventDefault();
+            const payload = {
+                gameName: document.getElementById('statGameName').value,
+                highestRank: document.getElementById('statRank').value,
+                mainRole: document.getElementById('statRole').value,
+                kdRatio: parseFloat(document.getElementById('statKd').value),
+                winRate: parseFloat(document.getElementById('statWinRate').value),
+                matchesPlayed: parseInt(document.getElementById('statMatches').value, 10)
+            };
+            const res = await fetch(`/api/players/${currentUser.id}/stats`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) {
+                currentUser = await res.json();
+                e.target.reset();
+                populateGamerEditor();
+                await fetchPlayers();
+            }
+        }
+
+        async function deleteStat(statId) {
+            const res = await fetch(`/api/players/${currentUser.id}/stats/${statId}`, { method: 'DELETE' });
+            if (res.ok) {
+                currentUser = await res.json();
+                populateGamerEditor();
+                await fetchPlayers();
+            }
+        }
+
+        async function fetchPlayers() {
+            const res = await fetch('/api/players');
+            allPlayers = await res.json();
+            renderPlayersDirectory();
+        }
+
+        function selectPlayerGameTab(playerId, index) {
+            selectedGameTab[playerId] = index;
+            renderPlayersDirectory();
+        }
+
+        function renderPlayersDirectory() {
+            const gameFilter = document.getElementById('filterGame').value;
+            const minKd = parseFloat(document.getElementById('filterMinKd').value) || 0;
+
+            const filtered = allPlayers.filter(player => {
+                if (!player.gameStats || player.gameStats.length === 0) {
+                    return gameFilter === 'ALL' && minKd === 0;
+                }
+                return player.gameStats.some(s =>
+                    (gameFilter === 'ALL' || s.gameName === gameFilter) && s.kdRatio >= minKd
+                );
+            });
+
+            const grid = document.getElementById('playersGrid');
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-2 text-center py-12 text-slate-500">No esports athletes match the current filter criteria.</div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(player => {
+                const stats = player.gameStats || [];
+                const activeIdx = selectedGameTab[player.id] || 0;
+                const activeStat = stats[activeIdx] || stats[0];
+
+                const gameTabsHtml = stats.map((s, idx) => `
+                    <button onclick="selectPlayerGameTab(${player.id}, ${idx})"
+                            class="px-3 py-1.5 text-xs font-semibold rounded-t border-b-2 transition ${
+                                idx === activeIdx
+                                ? 'border-cyan-400 text-cyan-300 bg-slate-900/90'
+                                : 'border-transparent text-slate-400 hover:text-white'
+                            }">
+                        ${s.gameName}
+                    </button>
+                `).join('');
+
+                const activeGameBody = activeStat ? `
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-b-lg rounded-tr-lg p-4 space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                            <span class="text-xs uppercase tracking-wider text-slate-400">Game Title: <strong class="text-white">${activeStat.gameName}</strong></span>
+                            <span class="text-xs px-2.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-semibold">
+                                ${activeStat.highestRank}
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 text-center">
+                            <div class="p-2 rounded bg-slate-950/70 border border-slate-800/80">
+                                <div class="text-[11px] text-slate-400 uppercase">K/D Ratio</div>
+                                <div class="font-gaming text-xl font-bold text-emerald-400">${activeStat.kdRatio}</div>
+                            </div>
+                            <div class="p-2 rounded bg-slate-950/70 border border-slate-800/80">
+                                <div class="text-[11px] text-slate-400 uppercase">Win Rate</div>
+                                <div class="font-gaming text-xl font-bold text-cyan-400">${activeStat.winRate}%</div>
+                            </div>
+                            <div class="p-2 rounded bg-slate-950/70 border border-slate-800/80">
+                                <div class="text-[11px] text-slate-400 uppercase">Matches</div>
+                                <div class="font-gaming text-xl font-bold text-white">${activeStat.matchesPlayed}</div>
+                            </div>
+                            <div class="p-2 rounded bg-slate-950/70 border border-slate-800/80">
+                                <div class="text-[11px] text-slate-400 uppercase">Main Role</div>
+                                <div class="text-xs font-semibold text-indigo-300 truncate mt-1" title="${activeStat.mainRole}">${activeStat.mainRole}</div>
+                            </div>
+                        </div>
+                    </div>
+                ` : `<div class="p-4 rounded bg-slate-900/50 border border-slate-800 text-xs text-slate-500">No game metrics uploaded yet.</div>`;
+
+                return `
+                    <div class="cyber-card rounded-xl p-6 flex flex-col justify-between space-y-5">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-12 h-12 rounded-lg bg-indigo-950 border border-indigo-500/40 flex items-center justify-center font-gaming text-2xl font-bold text-cyan-400">
+                                        ${player.gamertag.substring(0, 2).toUpperCase()}
+                                    </div>
+                                    <div>
+                                        <h3 class="font-gaming text-2xl font-bold text-white leading-none">${player.gamertag}</h3>
+                                        <p class="text-xs text-slate-400 mt-1">${player.fullName}</p>
+                                    </div>
+                                </div>
+                                <a href="mailto:${player.email}?subject=Esports%20Org%20Tryout%20Invitation%20-%20${player.gamertag}"
+                                   class="text-xs font-semibold px-3 py-1.5 rounded bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 transition">
+                                    Invite to Tryout
+                                </a>
+                            </div>
+
+                            <p class="text-xs text-slate-300 leading-relaxed">${player.bio || ''}</p>
+                        </div>
+
+                        <div>
+                            <div class="flex flex-wrap gap-1 border-b border-slate-800">
+                                ${gameTabsHtml}
+                            </div>
+                            ${activeGameBody}
+                        </div>
+
+                        <div class="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800/80">
+                            <span>Discord: <strong class="text-slate-200">${player.discordHandle || 'N/A'}</strong></span>
+                            <span>Contact: <strong class="text-slate-200">${player.email}</strong></span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('dashboardView').classList.add('hidden');
+            document.getElementById('navUserSection').classList.add('hidden');
+            document.getElementById('authView').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

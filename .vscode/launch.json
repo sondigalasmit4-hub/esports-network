@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Application",
+            "request": "launch",
+            "mainClass": "main.java.com.esports.Application"
+        },
+        {
+            "type": "java",
+            "name": "Run NexusPro Esports Server",
+            "request": "launch",
+            "mainClass": "com.esports.Application",
+            "projectName": "esports-network"
+        }
+    ]
+}
